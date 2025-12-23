@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> King Order web.com| تجربة طعام ملكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #A60D0D;
+            --primary-light: #CC2929;
+            --secondary: #FFD700;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+            --text-dark: #2d3436;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; background-color: var(--bg); color: var(--text-dark); direction: rtl; }
+        
+        /* الهيدر المودرن */
+        header { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; padding: 40px 20px; text-align: center;
+            border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
+            box-shadow: 0 10px 20px rgba(166, 13, 13, 0.2);
+            position: relative; z-index: 100;
+        }
+
+        header h1 { font-size: 2.5em; margin: 0; font-weight: 800; letter-spacing: 1px; }
+        header p { opacity: 0.9; margin-top: 5px; font-weight: 400; }
+
+        /* شريط البحث الاحترافي */
+        .search-wrapper {
+            max-width: 600px; margin: 25px auto -70px auto; position: relative; padding: 0 20px;
+        }
+        #search-input { 
+            width: 100%; padding: 18px 25px; border-radius: 30px; border: none; 
+            font-size: 1.1em; font-family: 'Cairo'; outline: none;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); background: var(--white);
+        }
+
+        .container { padding: 80px 20px 40px; max-width: 1200px; margin: auto; }
+
+        /* شبكة المطاعم */
+        .restaurant-grid { 
+            display: grid; gap: 30px; 
+            grid-template-columns: repeat(3, 1fr); 
+            margin-top: 40px;
+        }
+        
+        .restaurant-card { 
+            background: var(--white); border-radius: 25px; padding: 25px; text-align: center; 
+            cursor: pointer; position: relative; border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: var(--shadow); overflow: hidden;
+        }
+        .restaurant-card:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        
+        .restaurant-card img { 
+            width: 120px; height: 120px; border-radius: 50%; object-fit: cover; 
+            border: 5px solid #f1f1f1; margin-bottom: 15px;
+        }
+
+        .badge {
+            background: var(--secondary); color: #000; padding: 5px 12px; 
+            border-radius: 15px; font-size: 0.8em; font-weight: bold;
+            position: absolute; top: 15px; left: 15px;
+        }
+
+        .rating { color: var(--secondary); font-size: 0.9em; margin: 5px 0; }
+
+        /* صفحة المنيو */
+        .page-section { display: none; animation: slideUp 0.5s ease; }
+        .active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+        .back-btn { background: #eee; color: #333; padding: 10px 20px; border-radius: 15px; text-decoration: none; font-weight: bold; }
+        .back-btn:hover { background: #ddd; }
+
+        .flex-layout { display: flex; gap: 30px; flex-wrap: wrap; }
+        .menu-items-area { flex: 2; min-width: 350px; }
+        .cart-area { 
+            flex: 1; min-width: 320px; background: var(--white); padding: 30px; 
+            border-radius: 25px; height: fit-content; position: sticky; top: 20px; 
+            box-shadow: var(--shadow); border: 2px solid var(--primary);
+        }
+
+        .menu-card { 
+            background: var(--white); padding: 20px; margin-bottom: 15px; border-radius: 20px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-right: 8px solid var(--primary);
+        }
+        
+        .price-tag { color: var(--primary); font-weight: 800; font-size: 1.2em; }
+        .add-button { 
+            background: #2ecc71; color: white; border: none; padding: 12px 20px; 
+            border-radius: 15px; cursor: pointer; font-weight: 700;
+        }
+        .add-button:hover { background: #27ae60; transform: scale(1.05); }
+
+        .whatsapp-confirm { 
+            background: #25D366; color: white; width: 100%; padding: 20px; 
+            border: none; border-radius: 20px; font-size: 1.2em; font-weight: 800; 
+            cursor: pointer; margin-top: 25px; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        /* التجاوب */
+        @media (max-width: 992px) { .restaurant-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { 
+            .restaurant-grid { grid-template-columns: 1fr; } 
+            .flex-layout { flex-direction: column; }
+            header h1 { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="top-header">
+    <h1>👑 King Order</h1>
+    <p>استمتع بتجربة طلب ملكية من أفضل المطاعم</p>
+    <div class="search-wrapper">
+        <input type="text" id="search-input" placeholder="بحث عن مطعم (برجر، بيتزا، مشاوي...)" onkeyup="doSearch()">
+    </div>
+</header>
+
+<div class="container">
+    <section id="home-page" class="page-section active">
+        <h2 style="margin-bottom: 30px; font-weight: 800;">🔥 مطاعم مختارة لك</h2>
+        <div class="restaurant-grid" id="main-list"></div>
+    </section>
+
+    <section id="menu-page" class="page-section">
+        <div class="menu-header">
+            <h2 id="res-title" style="font-weight: 800; color: var(--primary);">اسم المطعم</h2>
+            <a href="#" class="back-btn" onclick="goHome()">🏠 العودة</a>
+        </div>
+        
+        <div class="flex-layout">
+            <div class="menu-items-area" id="items-list"></div>
+            
+            <div class="cart-area">
+                <h3 style="margin-top: 0;">🛒 سلتك الجميلة</h3>
+                <div id="cart-items" style="color: #636e72;">أضف بعض اللذاذة هنا..</div>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 1.1em;">الإجمالي:</span>
+                    <span class="price-tag"><span id="total-val">0</span> ج.م</span>
+                </div>
+                <button class="whatsapp-confirm" onclick="checkout()">
+                    تأكيد الطلب عبر واتساب ✅
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    // بيانات المطاعم الـ 10 بـ 10 وجبات لكل مطعم
+    const restaurants = [
+
+        { id: 1, name: "101 gril", phone: "2001019339230", cuisine: "shaorma", rating: "4.9 ⭐", time: "45 دقيقة", image: "101gril.png", menu: [{n:"كيلو كفتة", p:450}, {n:"نص كفتة", p:230}, {n:"كيلو طرب", p:480}, {n:"فرخة مشوية", p:220}, {n:"طاجن ورق عنب", p:90}, {n:"أرز بسمتي", p:40}, {n:"نص مندي", p:600}, {n:"طبق مشكل", p:150}, {n:"كفتة فراخ", p:180}, {n:"سلطات", p:20}] },
+        { id: 2, name: "برجر برنس", phone: "201112223334", cuisine: "برجر", rating: "4.7 ⭐", time: "30 دقيقة", image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=200", menu: [{n:"دبل تشيز", p:140}, {n:"برجر كينج", p:160}, {n:"تشيكن كرسبي", p:120}, {n:"بطاطس شيدر", p:50}, {n:"ميلك شيك", p:70}, {n:"وجبة عائلية", p:450}, {n:"ساندوتش صغير", p:60}, {n:"حلقات بصل", p:40}, {n:"صوص رانش", p:15}, {n:"كولا", p:25}] },
+        { id: 3, name: "بيتزا إيطالي", phone: "201212345678", cuisine: "بيتزا", rating: "4.8 ⭐", time: "35 دقيقة", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200", menu: [{n:"مارجريتا", p:110}, {n:"سوبر سوبريم", p:170}, {n:"بيتزا تونة", p:150}, {n:"مشروم", p:140}, {n:"لازانيا", p:120}, {n:"باستا وايت صوص", p:100}, {n:"كانيلوني", p:130}, {n:"خبز ثوم", p:45}, {n:"كالزوني", p:90}, {n:"بيتزا خضار", p:120}] },
+        { id: 4, name: "سوشي هوس", phone: "201099999999", cuisine: "سوشي", rating: "4.6 ⭐", time: "50 دقيقة", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=200", menu: [{n:"بوكس 12 قطعة", p:220}, {n:"بوكس 24 قطعة", p:410}, {n:"سلمون رول", p:130}, {n:"جمبري تيمبورا", p:150}, {n:"نودلز خضار", p:95}, {n:"شوربة سوشي", p:80}, {n:"سلطة كابوريا", p:85}, {n:"كاليفورنيا رول", p:110}, {n:"أرز ياباني", p:60}, {n:"ساشيمي", p:160}] },
+        { id: 5, name: "شاورما خان", phone: "201188888888", cuisine: "سوري", rating: "4.9 ⭐", time: "25 دقيقة", image: "https://images.unsplash.com/photo-1561651823-34fed0225304?w=200", menu: [{n:"فتة شاورما", p:110}, {n:"صاروخ دجاج", p:85}, {n:"وجبة عربي دبل", p:140}, {n:"ساندوتش لحم", p:95}, {n:"كبة قطعة", p:25}, {n:"تبولة", p:40}, {n:"تومية", p:15}, {n:"بطاطس سوري", p:40}, {n:"منقوشة", p:35}, {n:"ماريا لحم", p:100}] },
+        { id: 6, name: "سي فود ستار", phone: "201277777777", cuisine: "أسماك", rating: "4.8 ⭐", time: "55 دقيقة", image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200", menu: [{n:"كيلو بوري", p:190}, {n:"بلطي مقلي", p:130}, {n:"جمبري مشوي", p:380}, {n:"شوربة سي فود", p:120}, {n:"طاجن سبيط", p:160}, {n:"أرز صيادية", p:40}, {n:"فيليه", p:150}, {n:"كابوريا", p:220}, {n:"بلح البحر", p:200}, {n:"سلطة رنجة", p:60}] },
+        { id: 7, name: "كريب وبس", phone: "201066666666", cuisine: "كريب", rating: "4.5 ⭐", time: "20 دقيقة", image: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=200", menu: [{n:"كريب نوتيلا", p:70}, {n:"كريب زنجر", p:95}, {n:"كريب بطاطس", p:55}, {n:"بانكيك", p:80}, {n:"وافل شوكولاتة", p:85}, {n:"كريب ميكس", p:110}, {n:"ميلك شيك لوتس", p:90}, {n:"كريب شيش", p:95}, {n:"مولتن كيك", p:75}, {n:"عصير فريش", p:50}] },
+        { id: 8, name: "تاكو مكسيكو", phone: "201155555555", cuisine: "مكسيكي", rating: "4.6 ⭐", time: "40 دقيقة", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=200", menu: [{n:"تاكو لحم", p:110}, {n:"بوريتو دجاج", p:140}, {n:"ناشوز", p:90}, {n:"كساديا", p:150}, {n:"فاهيتا", p:175}, {n:"أرز مكسيكي", p:60}, {n:"سلطة تاكو", p:80}, {n:"بطاطس حارة", p:50}, {n:"تشيلي لحم", p:160}, {n:"ليمونادا", p:45}] },
+        { id: 9, name: "صبحي الشعبي", phone: "201244444444", cuisine: "مصري", rating: "4.9 ⭐", time: "30 دقيقة", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200", menu: [{n:"طاجن عكاوي", p:260}, {n:"طاجن ملوخية", p:50}, {n:"حمام محشي", p:120}, {n:"كشري كبير", p:60}, {n:"ممبار", p:140}, {n:"شوربة لسان", p:30}, {n:"أرز معمر", p:130}, {n:"مسقعة", p:90}, {n:"مهلبية", p:40}, {n:"مخلل", p:15}] },
+        { id: 10, name: "هيلثي هاب", phone: "201033333333", cuisine: "صحي", rating: "4.7 ⭐", time: "35 دقيقة", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200", menu: [{n:"صدور دجاج", p:145}, {n:"سلطة كينوا", p:115}, {n:"سلمون دايت", p:260}, {n:"أرز بني", p:45}, {n:"سلطة سيزر", p:95}, {n:"خضار سوتيه", p:60}, {n:"شوربة شوفان", p:75}, {n:"عصير برتقال", p:55}, {n:"زبادي فواكه", p:40}, {n:"توست أفوكادو", p:125}] }
+    ];
+
+    let cart = [];
+    let currentRes = null;
+
+    function renderRes(filter = restaurants) {
+        const grid = document.getElementById('main-list');
+        grid.innerHTML = filter.map(res => `
+            <div class="restaurant-card" onclick="openMenu(${res.id})">
+                <span class="badge">${res.time}</span>
+                <img src="${res.image}" alt="${res.name}">
+                <div class="rating">${res.rating}</div>
+                <h3 style="margin: 10px 0 5px 0;">${res.name}</h3>
+                <p style="color:#777; font-size:0.9em; margin:0;">${res.cuisine}</p>
+            </div>
+        `).join('');
+    }
+
+    function doSearch() {
+        const q = document.getElementById('search-input').value.toLowerCase();
+        const res = restaurants.filter(r => r.name.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q));
+        renderRes(res);
+    }
+
+    function openMenu(id) {
+        currentRes = restaurants.find(r => r.id === id);
+        document.getElementById('home-page').classList.remove('active');
+        document.getElementById('top-header').style.display = 'none';
+        document.getElementById('menu-page').classList.add('active');
+        document.getElementById('res-title').innerText = currentRes.name;
+        
+        const list = document.getElementById('items-list');
+        list.innerHTML = currentRes.menu.map(item => `
+            <div class="menu-card">
+                <div><strong>${item.n}</strong></div>
+                <div style="display:flex; align-items:center; gap:20px;">
+                    <span class="price-tag">${item.p} ج.م</span>
+                    <button class="add-button" onclick="addToCart('${item.n}', ${item.p})">أضف +</button>
+                </div>
+            </div>
+        `).join('');
+        window.scrollTo(0,0);
+    }
+
+    function goHome() {
+        document.getElementById('menu-page').classList.remove('active');
+        document.getElementById('top-header').style.display = 'block';
+        document.getElementById('home-page').classList.add('active');
+        cart = []; updateUI();
+    }
+
+    function addToCart(n, p) {
+        cart.push({n, p}); updateUI();
+    }
+
+    function removeFromCart(i) {
+        cart.splice(i, 1); updateUI();
+    }
+
+    function updateUI() {
+        const items = document.getElementById('cart-items');
+        const total = document.getElementById('total-val');
+        if(cart.length === 0) {
+            items.innerHTML = 'السلة فارغة..';
+            total.innerText = '0';
+            return;
+        }
+        items.innerHTML = cart.map((item, i) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.9em; border-bottom:1px solid #f9f9f9; padding-bottom:5px;">
+                <span>${item.n}</span>
+                <span>${item.p} ج.م <span onclick="removeFromCart(${i})" style="color:red; cursor:pointer; margin-right:8px;">❌</span></span>
+            </div>
+        `).join('');
+        total.innerText = cart.reduce((s, i) => s + i.p, 0);
+    }
+
+    function checkout() {
+        if(cart.length === 0) return alert("السلة فارغة!");
+        let msg = `*طلب جديد من تطبيق King Order 👑*%0A*المطعم:* ${currentRes.name}%0A----------------------------%0A`;
+        cart.forEach((item, i) => msg += `${i+1}. ${item.n} (${item.p} ج.م)%0A`);
+        msg += `----------------------------%0A*الإجمالي: ${document.getElementById('total-val').innerText} ج.م*`;
+        window.open(`https://wa.me/${currentRes.phone}?text=${msg}`, '_blank');
+    }
+
+    renderRes();
+</script>
+</body>
+</html>
